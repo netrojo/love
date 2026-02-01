@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>你愿意做我的女朋友吗？</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family: "Microsoft YaHei", sans-serif;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background: linear-gradient(135deg,#ff758c,#ff7eb3,#ffd3a5);
+    overflow:hidden;
+}
+
+.container{
+    width:90%;
+    max-width:420px;
+    padding:35px 25px;
+    border-radius:25px;
+    backdrop-filter: blur(15px);
+    background: rgba(255,255,255,0.25);
+    box-shadow:0 20px 40px rgba(0,0,0,0.2);
+    text-align:center;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+h1{
+    color:white;
+    font-size: clamp(22px,4vw,30px);
+    margin-bottom:25px;
+}
+
+.buttons{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:20px;
+    position:relative;
+    height:150px;
+    width:100%;
+}
+
+button{
+    border:none;
+    padding:14px 28px;
+    font-size:18px;
+    border-radius:14px;
+    cursor:pointer;
+}
+
+#yesBtn{
+    background: linear-gradient(45deg,#ff4d6d,#ff758c);
+    color:white;
+    box-shadow:0 5px 15px rgba(255,77,109,.5);
+}
+
+#noBtn{
+    background: rgba(0,0,0,0.7);
+    color:white;
+    position:relative;
+}
+
+#message{
+    font-size: clamp(20px,4vw,26px);
+    color:white;
+    font-weight:bold;
+    margin-top:15px;
+}
+
+#gifImage{
+    width:70%;
+    max-width:220px;
+    margin-top:15px;
+    display:none;
+    border-radius:18px;
+}
+
+/* Hearts */
+.heart{
+    position:absolute;
+    font-size:22px;
+    animation: floatUp linear forwards;
+}
+
+@keyframes floatUp{
+    from{
+        transform:translateY(0);
+        opacity:1;
+    }
+    to{
+        transform:translateY(-400px);
+        opacity:0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1 id="mainQuestion">
+        你愿意做我的女朋友吗？ ❤️
+    </h1>
+
+    <div class="buttons" id="buttonsArea">
+        <button id="yesBtn">愿意 💖</button>
+        <button id="noBtn">不要</button>
+    </div>
+
+    <div id="message"></div>
+    <img id="gifImage" src="hello.webp">
+
+    <!-- Audio -->
+    <audio id="loveSound" src="sound.mp3"></audio>
+
+</div>
+
+<script>
+
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const area = document.getElementById("buttonsArea");
+const question = document.getElementById("mainQuestion");
+const message = document.getElementById("message");
+const gif = document.getElementById("gifImage");
+const sound = document.getElementById("loveSound");
+
+const loveMessage = "我是世界上最幸福的人 ❤️";
+
+/* Normal Escape (No crazy) */
+noBtn.addEventListener("mouseover", () => {
+    const rect = area.getBoundingClientRect();
+
+    const maxX = rect.width - noBtn.offsetWidth;
+    const maxY = rect.height - noBtn.offsetHeight;
+    noBtn.style.position="absolute";
+    noBtn.style.left=Math.random()*maxX+"px";
+    noBtn.style.top=Math.random()*maxY+"px";
+});
+
+/* Yes click */
+yesBtn.addEventListener("click", ()=>{
+
+    question.style.display="none";
+    area.style.display="none";
+
+    message.innerText = loveMessage;
+    gif.style.display="block";
+
+    sound.play(); // تشغيل الصوت
+
+    // القلوب تبدأ تظهر بشكل دائم
+    startHearts();
+});
+
+/* Hearts */
+function createHeart(){
+    let heart=document.createElement("div");
+    heart.className="heart";
+    heart.innerHTML="❤️💖💘";
+
+    heart.style.left=Math.random()*window.innerWidth+"px";
+    heart.style.top=window.innerHeight+"px";
+    heart.style.animationDuration=(Math.random()*2+2)+"s";
+
+    document.body.appendChild(heart);
+
+    setTimeout(()=>heart.remove(),3000);
+}
+
+/* Hearts continuous */
+let heartsInterval;
+function startHearts(){
+    heartsInterval = setInterval(createHeart, 200); // قلب كل 200ms
+}
+
+</script>
+
+</body>
+</html>
